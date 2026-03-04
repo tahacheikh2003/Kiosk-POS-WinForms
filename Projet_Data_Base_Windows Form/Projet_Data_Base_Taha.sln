@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projet_Data_Base_Taha", "Projet_Data_Base_Taha.csproj", "{FD3938F1-5068-4745-B283-A51286024E3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD3938F1-5068-4745-B283-A51286024E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD3938F1-5068-4745-B283-A51286024E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD3938F1-5068-4745-B283-A51286024E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD3938F1-5068-4745-B283-A51286024E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {650502CD-AF0C-48A1-A3C3-5DE378F648A6}
+	EndGlobalSection
+EndGlobal

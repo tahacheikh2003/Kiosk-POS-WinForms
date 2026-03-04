@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Projet_Data_Base_Taha
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // titre de form
+            this.Text = "Kiosk - " + Session.CurrentUserName + " (" + Session.CurrentUserRole + ")";
+
+            // Role-Based Access Control
+            if (Session.CurrentUserRole == "Caissier")
+            {
+                btnProducts.Visible = false;
+                btnSuppliers.Visible = false;
+                btnStock.Visible = false;
+            }
+
+        }
+
+        private void btnSuppliers_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Suppliers Form - prochainement");
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            // Retour to Login
+            Form1 login = new Form1();
+            login.Show();
+            this.Close();
+        }
+
+        private void btnProducts_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Products Form - prochainement");
+        }
+
+        private void btnShift_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Shift Form - prochainement");
+            new ShiftForm().ShowDialog();
+        }
+
+        private void btnPOS_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("POS Form - prochainement");
+            
+            new PosForm().ShowDialog();
+        }
+
+        private void btnStock_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Stock Form - prochainement");
+        }
+    }
+}

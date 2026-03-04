@@ -1,0 +1,46 @@
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.csproj.AssemblyReference.cache
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.Form1.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.Properties.Resources.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.csproj.GenerateResource.cache
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.csproj.CoreCompileInputs.cache
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\Projet_Data_Base_Taha.exe.config
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\Projet_Data_Base_Taha.exe
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\Projet_Data_Base_Taha.pdb
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\dotnetCharting.WinForms.dll
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_D.2C34C61B.Up2Date
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.exe
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.pdb
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.exe.config
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.MainForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.ShiftForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.PosForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.InvoiceForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.DailySalesReportForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.StockForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.ProductsForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.SuppliersForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.ProductAddForSupplierForm.resources
+D:\Year4\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.RestockForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\Projet_Data_Base_Taha.exe.config
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\Projet_Data_Base_Taha.exe
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\Projet_Data_Base_Taha.pdb
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\bin\Debug\dotnetCharting.WinForms.dll
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.csproj.AssemblyReference.cache
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.exe.config
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.DailySalesReportForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.Form1.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.InvoiceForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.MainForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.PosForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.ProductAddForSupplierForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.ProductsForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.Properties.Resources.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.RestockForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.ShiftForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.StockForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.SuppliersForm.resources
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.csproj.GenerateResource.cache
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.csproj.CoreCompileInputs.cache
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_D.2C34C61B.Up2Date
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.exe
+D:\Year4\Sem 7\ProjetDataBase\Projet_Data_Base_Taha\obj\Debug\Projet_Data_Base_Taha.pdb

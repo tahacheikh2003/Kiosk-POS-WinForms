@@ -1,0 +1,224 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using MyNameSpace;
+
+namespace Projet_Data_Base_Taha
+{
+    public partial class SuppliersForm : Form
+    {
+        private DataLayer d;
+        private DataTable suppliersDt;
+        private int? selectedSupplierId = null;
+
+        public SuppliersForm()
+        {
+            InitializeComponent();
+        }
+
+        private void txtNom_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (!TryReadSupplierInputs(out string nom, out string tel, out string email))
+                return;
+
+            string sql =
+                "DECLARE @newId INT; " +
+                $"EXEC dbo.usp_Suppliers_Insert @nom = {SqlStrOrNull(nom)}, @telephone = {SqlStrOrNull(tel)}, @email = {SqlStrOrNull(email)}, @new_id_supplier = @newId OUTPUT; " +
+                "SELECT @newId AS id_supplier;";
+
+            DataTable dt = d.GetData(sql, "newSup");
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                MessageBox.Show("Fournisseur ajouté. ID=" + dt.Rows[0]["id_supplier"].ToString());
+                LoadSuppliers();
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (selectedSupplierId == null)
+            {
+                MessageBox.Show("Sélectionnez un fournisseur.");
+                return;
+            }
+
+            if (!TryReadSupplierInputs(out string nom, out string tel, out string email))
+                return;
+
+            string sql =
+                $"EXEC dbo.usp_Suppliers_Update @id_supplier = {selectedSupplierId.Value}, " +
+                $"@nom = {SqlStrOrNull(nom)}, @telephone = {SqlStrOrNull(tel)}, @email = {SqlStrOrNull(email)};";
+
+            d.ExecuteActionCommand(sql);
+            MessageBox.Show("Fournisseur modifié.");
+            LoadSuppliers();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (selectedSupplierId == null)
+            {
+                MessageBox.Show("Sélectionnez un fournisseur.");
+                return;
+            }
+
+            // إذا عنده منتجات، ما نخليه ينحذف (لأنه FK غالباً)
+            string sqlCheck = $"SELECT COUNT(*) FROM dbo.Products WHERE id_supplier = {selectedSupplierId.Value};";
+            object v = d.GetValue(sqlCheck);
+            int cnt = (v == null) ? 0 : Convert.ToInt32(v);
+
+            if (cnt > 0)
+            {
+                MessageBox.Show("Impossible de supprimer: ce fournisseur possède des produits.\nSupprimez/Modifiez les produits d'abord.");
+                return;
+            }
+
+            var res = MessageBox.Show("Supprimer ce fournisseur ?", "Confirmation",
+                                      MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (res != DialogResult.Yes) return;
+
+            string sql = $"EXEC dbo.usp_Suppliers_Delete @id_supplier = {selectedSupplierId.Value};";
+            d.ExecuteActionCommand(sql);
+
+            MessageBox.Show("Fournisseur supprimé.");
+            LoadSuppliers();
+        }
+
+        private void dgvSuppliers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var row = dgvSuppliers.Rows[e.RowIndex];
+            selectedSupplierId = Convert.ToInt32(row.Cells["id_supplier"].Value);
+
+            txtNom.Text = row.Cells["nom"].Value?.ToString() ?? "";
+            txtTel.Text = row.Cells["telephone"].Value?.ToString() ?? "";
+            txtEmail.Text = row.Cells["email"].Value?.ToString() ?? "";
+
+            LoadProductsOfSupplier(selectedSupplierId.Value);
+        }
+
+        private void LoadProductsOfSupplier(int idSupplier)
+        {
+            string sql =
+                "SELECT p.id_produit, p.nom, p.prix_vente, p.stock_minimum, p.actif, c.libelle AS categorie " +
+                "FROM dbo.Products p " +
+                "INNER JOIN dbo.Categories c ON c.id_categorie = p.id_categorie " +
+                $"WHERE p.id_supplier = {idSupplier} " +
+                "ORDER BY p.nom;";
+
+            DataTable dt = d.GetData(sql, "supplierProducts");
+            dgvSupplierProducts.DataSource = dt;
+        }
+        private void dgvSupplierProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnAddProductToSupplier_Click(object sender, EventArgs e)
+        {
+            if (selectedSupplierId == null)
+            {
+                MessageBox.Show("Choisissez un fournisseur d'abord.");
+                return;
+            }
+
+            // نفتح فورم إضافة منتج ونمرر supplierId
+            var f = new ProductAddForSupplierForm(selectedSupplierId.Value);
+            f.ShowDialog();
+
+            // بعد الإضافة: نعمل refresh لمنتجات المورد
+            LoadProductsOfSupplier(selectedSupplierId.Value);
+        }
+
+        private void SuppliersForm_Load(object sender, EventArgs e)
+        {
+            d = new DataLayer(@".\SQLEXPRESS", "KioskDB2");
+            if (!d.IsValid)
+            {
+                MessageBox.Show("Connexion SQL invalide.");
+                Close();
+                return;
+            }
+
+            // Grid Suppliers
+            dgvSuppliers.ReadOnly = true;
+            dgvSuppliers.AllowUserToAddRows = false;
+            dgvSuppliers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSuppliers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Grid Products of supplier
+            dgvSupplierProducts.ReadOnly = true;
+            dgvSupplierProducts.AllowUserToAddRows = false;
+            dgvSupplierProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSupplierProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            LoadSuppliers();
+        }
+        private void LoadSuppliers()
+        {
+            string sql =
+                "SELECT id_supplier, nom, telephone, email " +
+                "FROM dbo.Suppliers " +
+                "ORDER BY nom;";
+
+            suppliersDt = d.GetData(sql, "suppliers");
+            dgvSuppliers.DataSource = suppliersDt;
+
+            selectedSupplierId = null;
+            ClearSupplierInputs();
+
+            // clear products grid
+            dgvSupplierProducts.DataSource = null;
+        }
+
+        private void ClearSupplierInputs()
+        {
+            txtNom.Text = "";
+            txtTel.Text = "";
+            txtEmail.Text = "";
+        }
+
+        private string SqlStrOrNull(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return "NULL";
+            return "N'" + s.Trim().Replace("'", "''") + "'";
+        }
+
+        private bool TryReadSupplierInputs(out string nom, out string tel, out string email)
+        {
+            nom = txtNom.Text.Trim();
+            tel = txtTel.Text.Trim();
+            email = txtEmail.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nom))
+            {
+                MessageBox.Show("Nom fournisseur obligatoire.");
+                return false;
+            }
+            return true;
+        }
+
+    }
+}

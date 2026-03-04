@@ -1,0 +1,120 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using MyNameSpace;
+
+namespace Projet_Data_Base_Taha
+{
+    public partial class StockForm : Form
+    {
+        private DataTable stockDt;
+        private DataLayer d;
+        public StockForm()
+        {
+            InitializeComponent();
+        }
+
+        private void btnExportStock_Click(object sender, EventArgs e)
+        {
+            if (stockDt == null || stockDt.Rows.Count == 0)
+            {
+                MessageBox.Show("Aucune donnée à exporter. Cliquez sur Refresh d'abord.");
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            sfd.Filter = "Excel (TSV)|*.tsv|CSV (Excel)|*.csv";
+            sfd.FileName = $"Stock_{DateTime.Now:yyyyMMdd_HHmm}.csv";
+
+            if (sfd.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                if (sfd.FileName.EndsWith(".tsv", StringComparison.OrdinalIgnoreCase))
+                    ExportDataTable(stockDt, sfd.FileName, '\t');
+                else
+                    ExportDataTable(stockDt, sfd.FileName, ','); // Excel FR غالباً
+
+                MessageBox.Show("Export terminé: " + sfd.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur export: " + ex.Message);
+            }
+
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadStock();
+        }
+
+        private void StockForm_Load(object sender, EventArgs e)
+        {
+            d = new DataLayer(@".\SQLEXPRESS", "KioskDB2");
+            if (!d.IsValid)
+            {
+                MessageBox.Show("Connexion SQL invalide.");
+                Close();
+                return;
+            }
+
+            dgvStock.ReadOnly = true;
+            dgvStock.AllowUserToAddRows = false;
+            dgvStock.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            LoadStock();
+        }
+        private void LoadStock()
+        {
+            string sql =
+                "SELECT id_produit, produit, categorie, supplier, prix_vente, " +
+                "quantite_actuelle, stock_minimum, stock_status, date_maj " +
+                "FROM dbo.vw_CurrentStock " +
+                "ORDER BY stock_status, produit;";
+
+            stockDt = d.GetData(sql, "stock");
+            dgvStock.DataSource = stockDt;
+        }
+        private void ExportDataTable(DataTable dt, string filePath, char sep)
+        {
+            using (var sw = new System.IO.StreamWriter(filePath, false, System.Text.Encoding.UTF8))
+            {
+                // Header
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (i > 0) sw.Write(sep);
+                    sw.Write(EscapeCell(dt.Columns[i].ColumnName, sep));
+                }
+                sw.WriteLine();
+
+                // Rows
+                foreach (DataRow row in dt.Rows)
+                {
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        if (i > 0) sw.Write(sep);
+                        sw.Write(EscapeCell(row[i]?.ToString() ?? "", sep));
+                    }
+                    sw.WriteLine();
+                }
+            }
+        }
+
+        private string EscapeCell(string s, char sep)
+        {
+            // إذا فيها sep أو quote أو newline -> نعمل quotes
+            if (s.Contains(sep) || s.Contains("\"") || s.Contains("\n") || s.Contains("\r"))
+                return "\"" + s.Replace("\"", "\"\"") + "\"";
+            return s;
+        }
+    }
+}

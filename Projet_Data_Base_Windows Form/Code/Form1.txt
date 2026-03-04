@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using MyNameSpace;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace Projet_Data_Base_Taha
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+          
+            // Enter fait Login
+            this.AcceptButton = btnLogin;
+
+            // Hide password 
+            txtPassword.UseSystemPasswordChar = true;
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            string login = txtLogin.Text.Trim();
+            string pass = txtPassword.Text;
+
+            if (login == "" || pass == "")
+            {
+                MessageBox.Show("Veuillez saisir le login et le mot de passe.");
+                return;
+            }
+
+            
+            DataLayer d = new DataLayer(@".\SQLEXPRESS", "KioskDB2");
+
+            if (!d.IsValid)
+            {
+                MessageBox.Show("Connexion SQL invalide.");
+                return;
+            }
+
+            string sql =
+                $"EXEC dbo.usp_Auth_Login " +
+                $"@login = N'{loginEsc}', " +
+                $"@mot_de_passe = N'{passEsc}'";
+
+            DataTable dt = d.GetData(sql, "auth");
+
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                MessageBox.Show("Login ou mot de passe incorrect.");
+                return;
+            }
+
+            DataRow r = dt.Rows[0];
+
+            Session.CurrentUserId = Convert.ToInt32(r["id_user"]);
+            Session.CurrentUserRole = r["role"].ToString();
+            Session.CurrentUserName = r["prenom"].ToString() + " " + r["nom"].ToString();
+
+            MessageBox.Show("Bienvenue " + Session.CurrentUserName);
+
+            // افتح الفورم الرئيسي
+            MainForm main = new MainForm();
+            main.Show();
+            this.Hide();
+        }
+        private void txtPassword_TextChanged(object sender, EventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+
+        private void txtLogin_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPassword.UseSystemPasswordChar = !checkBox1.Checked;
+
+        }
+        
+    // Session (تخزين المستخدم الحالي)
+    public static class Session
+    {
+        public static int CurrentUserId { get; set; }
+        public static string CurrentUserRole { get; set; }
+        public static string CurrentUserName { get; set; }
+    }
+}

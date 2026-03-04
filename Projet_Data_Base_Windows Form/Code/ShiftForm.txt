@@ -1,0 +1,124 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using MyNameSpace;
+
+namespace Projet_Data_Base_Taha
+{
+    
+    public partial class ShiftForm : Form
+    {
+        
+        private DataLayer d;
+        private int? currentShiftId = null;
+
+        public ShiftForm()
+        {
+            InitializeComponent();
+        }
+
+        private void ShiftForm_Load(object sender, EventArgs e)
+        {
+            d = new DataLayer(@".\SQLEXPRESS", "KioskDB2");
+            if (!d.IsValid)
+            {
+                MessageBox.Show("Connexion SQL invalide.");
+                this.Close();
+                return;
+            }
+
+            LoadOpenShift();
+        }
+        private void LoadOpenShift()
+        {
+            string sql = $"EXEC dbo.usp_Shift_GetOpenByUser @id_user = {Session.CurrentUserId}";
+            DataTable dt = d.GetData(sql, "openShift");
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                currentShiftId = Convert.ToInt32(dt.Rows[0]["id_shift"]);
+
+                // وقت الفتح من الداتابيس
+                DateTime opened = Convert.ToDateTime(dt.Rows[0]["date_ouverture"]);
+
+                // ✅ Bonus: اسم + وقت (بدون ID)
+                lblStatus.Text = $"Shift: OPEN - {Session.CurrentUserName} (Depuis {opened:dd/MM/yyyy HH:mm})";
+                btnOpenShift.Enabled = false;
+                btnCloseShift.Enabled = true;
+                txtMontantReel.Enabled = true;
+            }
+            else
+            {
+                currentShiftId = null;
+                lblStatus.Text = "Shift: CLOSED";
+                btnOpenShift.Enabled = true;
+                btnCloseShift.Enabled = false;
+                txtMontantReel.Clear();
+                txtMontantReel.Enabled= false;
+            }
+
+            lblTheorique.Text = "";
+            lblEcart.Text = "";
+           
+
+        }
+
+        private void btnOpenShift_Click(object sender, EventArgs e)
+        {
+            // نستخدم SQL text لالتقاط OUTPUT
+            string sql =
+                "DECLARE @newId INT; " +
+                $"EXEC dbo.usp_Shift_Open @id_user = {Session.CurrentUserId}, @new_id_shift = @newId OUTPUT; " +
+                "SELECT @newId AS id_shift;";
+
+            DataTable dt = d.GetData(sql, "newShift");
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                currentShiftId = Convert.ToInt32(dt.Rows[0]["id_shift"]);
+                MessageBox.Show("Shift opened. ID = " + currentShiftId);
+            }
+
+            LoadOpenShift();
+        }
+
+        private void btnCloseShift_Click(object sender, EventArgs e)
+        {
+            if (currentShiftId == null)
+            {
+                MessageBox.Show("Aucun shift ouvert.");
+                return;
+            }
+
+            if (!decimal.TryParse(txtMontantReel.Text.Trim(), out decimal montantReel))
+            {
+                MessageBox.Show("Montant réel invalide.");
+                return;
+            }
+
+            string sql = $"EXEC dbo.usp_Shift_Close @id_shift = {currentShiftId.Value}, @montant_reel = {montantReel.ToString().Replace(',', '.')}";
+            d.ExecuteActionCommand(sql);
+
+            // بعد الإغلاق: نجيب بيانات الشفت لنعرض النظري والفرق
+            string sqlGet = $"EXEC dbo.usp_Shift_SelectOne @id_shift = {currentShiftId.Value}";
+            DataTable dt = d.GetData(sqlGet, "shiftOne");
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                var r = dt.Rows[0];
+                lblTheorique.Text = "Théorique: " + r["montant_theorique"].ToString();
+                lblEcart.Text = "Écart: " + r["ecart"].ToString();
+            }
+
+            MessageBox.Show("Shift closed.");
+            LoadOpenShift();
+        }
+    }
+}
+    
+

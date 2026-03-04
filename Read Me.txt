@@ -1,0 +1,147 @@
+Kiosk POS Management System
+
+A desktop Point of Sale (POS) and Inventory Management System developed using C# WinForms and SQL Server.
+
+This project simulates a small kiosk/shop management system with user authentication, product management, stock tracking, sales processing, and shift management.
+
+Technologies Used
+
+C# WinForms (.NET)
+
+SQL Server
+
+Stored Procedures
+
+Views & Functions
+
+ADO.NET
+
+Project Structure
+Data Base/
+   KioskDB2_full.sql        -> Complete database setup script
+
+Projet_Data_Base_Windows Form/
+   WinForms application source code
+Features
+Authentication
+
+Secure login system
+
+Role management (Manager / Caissier)
+
+Product Management
+
+Add / Edit / Delete products
+
+Categories and suppliers
+
+Active / inactive products
+
+Inventory Management
+
+Automatic stock tracking
+
+Restock functionality
+
+Low stock detection
+
+Sales (POS)
+
+Create sales transactions
+
+Sale details per product
+
+Automatic stock deduction
+
+Shift Management
+
+Open shift
+
+Close shift
+
+Calculate theoretical vs real amount
+
+Shift validation before allowing sales
+
+Reports
+
+Daily sales summary
+
+Top selling products
+
+Stock overview
+
+Database
+
+The system uses SQL Server with:
+
+9 tables
+
+Stored Procedures for CRUD operations
+
+Views for reporting
+
+Table-valued Functions for analytics
+
+Main tables:
+
+Users
+
+Categories
+
+Suppliers
+
+Products
+
+Inventory
+
+Shift
+
+Sales
+
+SaleDetails
+
+Purchases
+
+How to Run the Project
+1. Setup the Database
+
+Open SQL Server Management Studio and run:
+
+Data Base/KioskDB2_full.sql
+
+This will automatically create:
+
+Database KioskDB2
+
+Tables
+
+Views
+
+Functions
+
+Stored Procedures
+
+2. Configure SQL Server
+
+The application expects the SQL instance:
+
+.\SQLEXPRESS
+
+If your SQL Server instance is different, update the connection in the DataLayer class.
+
+3. Run the Application
+
+Open the project:
+
+Projet_Data_Base_Windows Form
+
+Run the WinForms application.
+
+Author
+
+Student project for database and application development practice.
+
+Notes
+
+This project demonstrates the integration between C# WinForms and SQL Server using stored procedures and structured database design.
